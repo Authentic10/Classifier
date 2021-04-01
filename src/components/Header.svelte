@@ -21,7 +21,7 @@
           Home
         </a>
         <a class="navbar-item" href="azure">
-          Azure
+          Server
         </a>
       </div>
     </div>

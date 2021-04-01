@@ -1,57 +1,137 @@
-<script lang="ts">
+<script >
+
+  let imageTab = true;
+  let fileName = 'No file uploaded';
+  let fileURL = '';
+  let isThereAFile = false;
+
+  function tabToggle(){
+    imageTab = !imageTab;
+  }
+
+
+  function displayFile(){
+    let userFile = document.getElementById('user-file');
+    let reader = new FileReader();
+    if('files' in userFile){
+      //alert(userFile.files.length);
+      if (userFile.files.length > 0) {
+
+        let fileSize = userFile.files[0].size;
+
+        if(fileSize > 4000000){
+          alert('File size can\'t be greater than 4 MB');
+        } else {
+          fileName = userFile.files[0].name;
+          isThereAFile = !isThereAFile;
+          reader.onload = () => {
+            fileURL = reader.result;
+          }
+        reader.readAsDataURL(userFile.files[0]);
+        }
+    }
+  }
+    
+}
 
 </script>
 
 <main>
-    <h1 class="title is-3">Please choose a file belonging one of the classes below</h1>
-    <div class="columns">
-        <div class="column">
-          <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pixelstalk.net%2Fwp-content%2Fuploads%2F2016%2F05%2FAirplane-HD-Wallpaper.jpg&f=1&nofb=1" alt="airplane" />
-        </div>
-        <div class="column">
-          <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.XvScO1EgPiwghgX3Umh-CwHaE6%26pid%3DApi&f=1" alt="automobile">
-        </div>
-        <div class="column">
-          <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.lr8bRv1cH7S7a995n3x9wAHaEK%26pid%3DApi&f=1" alt="bird">
-        </div>
-        <div class="column">
-          <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.Sbtp6DnO5KP7WVNuygzhZwHaFH%26pid%3DApi&f=1" alt="cat">
-        </div>
-        <div class="column">
-          <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.PIqYUtOfcCFEkHsadZjYngHaFa%26pid%3DApi&f=1" alt="deer">
-        </div>
-        <div class="column">
-          <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.bBAdHie9rVifIiTHcTEr-gHaE8%26pid%3DApi&f=1" alt="dog">
-        </div>
-        <div class="column">
-          <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.MO_7aWneKh8zsCIVaVgDlwHaGs%26pid%3DApi&f=1" alt="frog">
-        </div>
-        <div class="column">
-          <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.vyrlywUhWj0aY1veG7ZHGAHaEK%26pid%3DApi&f=1" alt="horse">
-        </div>
-        <div class="column">
-          <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.wISFZUucxoC43pP6QHlCowHaEo%26pid%3DApi&f=1" alt="ship">
-        </div>
-        <div class="column">
-          <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.f7s_7WHfhHXlfJPZ64DnQAHaFj%26pid%3DApi&f=1" alt="truck">
-        </div>
-    </div>
-    <div class="file is-centered is-boxed">
+    <h1 class="title is-3">Please, choose an image or paste a link</h1>
+    {#if imageTab}
+    <div >
+      <div class="tabs is-centered is-toggle">
+        <ul>
+          <li class="is-active">
+            <!-- svelte-ignore a11y-missing-attribute -->
+            <a>
+              <span class="icon is-small">
+                <i class="fa fa-image" aria-hidden="true"></i>
+              </span>
+              <span>Image</span>
+            </a>
+          </li>
+          <!-- svelte-ignore a11y-missing-attribute -->
+          <li>
+            <a on:click="{tabToggle}">
+              <span class="icon is-small">
+                <i class="fa fa-link" aria-hidden="true"></i>
+              </span>
+              <span>Link</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      {#if !isThereAFile}
+      <div class="file is-centered is-boxed is-primary has-name">
         <label class="file-label">
-          <input class="file-input" type="file" accept="image/*" name="file">
+          <input id="user-file" class="file-input" type="file" name="user-file" accept=".jpg, .png, .jpeg" on:change="{displayFile}">
           <span class="file-cta">
-            <span class="file-icon">
+            <!--<span class="file-icon ml-6">
               <i class="fa fa-upload"></i>
-            </span>
+            </span>-->
             <span class="file-label">
               Choose a file…
             </span>
           </span>
+          <span class="file-name">
+            {fileName}
+          </span>
         </label>
+      </div>
+      {/if}
+      {#if isThereAFile}
+      <div class="img">
+        <img src="{fileURL}" alt="File to predict">
+      </div>
+      <div class="field mt-2">
+        <div class="control">
+          <button class="button is-primary">Predict</button>
+        </div>
+      </div>
+      {/if}
     </div>
-    <div class="image is-centered">
-      <img on:change="" src="" alt="user_pic" id="user_pic">
-    </div>
+    {/if}
+
+    {#if !imageTab}
+    <div class="link">
+      <div class="tabs is-centered is-toggle">
+        <ul>
+          <li>
+            <!-- svelte-ignore a11y-missing-attribute -->
+            <a on:click="{tabToggle}">
+              <span class="icon is-small">
+                <i class="fa fa-image" aria-hidden="true"></i>
+              </span>
+              <span>Image</span>
+            </a>
+          </li>
+          <!-- svelte-ignore a11y-missing-attribute -->
+          <li class="is-active">
+            <a>
+              <span class="icon is-small">
+                <i class="fa fa-link" aria-hidden="true"></i>
+              </span>
+              <span>Link</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="field">
+        <p class="control has-icons-left">
+          <input class="input" type="text" placeholder="Link">
+          <span class="icon is-small is-left">
+            <i class="fa fa-link"></i>
+          </span>
+        </p>
+        <div class="field">
+          <div class="control">
+            <button class="button is-primary">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>  
+    {/if}
 </main>
 
 <style lang="scss">
@@ -59,9 +139,12 @@
 		text-align: center;
 		padding: 1em;
 		margin: 0 auto;
+    width: 80%;
 	}
 
-  #user_pic {
-    display: none;
+  img {
+    max-width: auto;
+    max-height: auto;
   }
+ 
 </style>
