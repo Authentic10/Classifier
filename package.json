@@ -7,7 +7,7 @@
     "css-watch": "npm run css-build -- --watch",
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv public",
+    "start": "sirv public -s",
     "validate": "svelte-check"
   },
   "devDependencies": {
