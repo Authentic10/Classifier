@@ -126,7 +126,7 @@ function submitHandler(e){
       {#if !isThereAFile}
       <div class="file is-centered is-boxed is-primary has-name">
         <label class="file-label">
-          <input id="user-file" class="file-input" type="file" name="user-file" accept=".jpg, .png, .jpeg" on:change="{displayFile}">
+          <input id="user-file" class="file-input" type="file" name="user-file" accept="image/*" on:change="{displayFile}">
           <span class="file-cta">
             <span class="file-label">
               Choose a file…
