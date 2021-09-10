@@ -1,14 +1,14 @@
 <script >
 
-  let imageTab = true;
+  let showMore = false;
   let fileName = 'No file uploaded';
   let fileURL = '';
   let isThereAFile = false;
   let predButton = true;
   let prediction;
 
-  function tabToggle(){
-    imageTab = !imageTab;
+  function showMoreToggle(){
+    showMore = !showMore;
   }
 
 
@@ -98,8 +98,7 @@ function submitHandler(e){
 </script>
 
 <main>
-    <h1 class="title is-3">Please, choose an image or paste a link</h1>
-    {#if imageTab}
+    <h1 class="title is-3">Please, choose an image</h1>
     <div >
       <div class="tabs is-centered is-toggle">
         <ul>
@@ -113,14 +112,6 @@ function submitHandler(e){
             </a>
           </li>
           <!-- svelte-ignore a11y-missing-attribute -->
-          <li>
-            <a on:click="{tabToggle}">
-              <span class="icon is-small">
-                <i class="fa fa-link" aria-hidden="true"></i>
-              </span>
-              <span>Link</span>
-            </a>
-          </li>
         </ul>
       </div>
       {#if !isThereAFile}
@@ -167,60 +158,25 @@ function submitHandler(e){
       {#if prediction === undefined}
         <p></p>
       {:else}
-      {#await prediction}
+      {#await prediction} 
         <p>Loading ...</p>
       {:then value } 
+      <p class="subtitle is-6">
+        <span class="has-text-weight-bold">Prediction :</span> {value.predictions[0].tagName} - <span class="has-text-weight-bold">Score :</span> {value.predictions[0].probability}
+      </p>
+      <button class="button is-small" on:click="{showMoreToggle}">Scores for all</button>
+      {#if showMore}
       <div id="pred-classes" >
         {#each value.predictions as pred}
           <p>{pred.tagName} : {pred.probability}</p> 
         {/each}
       </div>
+      {/if}
       {:catch error}
       {error.message}
       {/await}
       {/if}
-    </div>
-    {/if}
-
-    {#if !imageTab}
-    <div class="link">
-      <div class="tabs is-centered is-toggle">
-        <ul>
-          <li>
-            <!-- svelte-ignore a11y-missing-attribute -->
-            <a on:click="{tabToggle}">
-              <span class="icon is-small">
-                <i class="fa fa-image" aria-hidden="true"></i>
-              </span>
-              <span>Image</span>
-            </a>
-          </li>
-          <!-- svelte-ignore a11y-missing-attribute -->
-          <li class="is-active">
-            <a>
-              <span class="icon is-small">
-                <i class="fa fa-link" aria-hidden="true"></i>
-              </span>
-              <span>Link</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-      <div class="field">
-        <p class="control has-icons-left">
-          <input class="input" type="text" placeholder="Link">
-          <span class="icon is-small is-left">
-            <i class="fa fa-link"></i>
-          </span>
-        </p>
-        <div class="field">
-          <div class="control">
-            <button class="button is-primary">Predict</button>
-          </div>
-        </div>
-      </div>
-    </div>  
-    {/if}
+    </div> 
 </main>
 
 <style lang="scss">

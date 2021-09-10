@@ -5,12 +5,12 @@
 
 <main>
     <h1 class="title is-2">Fruits and Vegetables</h1>
-    <p class="subtitle is-4">
+    <p class="subtitle is-5">
         This web app is built to test a machine learning model built for a dataset trained on the cloud.
         The model is trained to predict different classes of fruits and vegetables: 
         <span>apple, banana, beetroot, carrot, corn, cucumber, ginger, lemon, lettuce, mango, onion, orange, potato, sweetpotato, tomato and watermelon.</span>
     </p>
-    <p class="subtitle is-5">Click <a href="{datasetURL}" target="blank">here</a> for more information about the dataset.</p>
+    <p class="subtitle is-6">Click <a href="{datasetURL}" target="blank">here</a> for more information about the dataset.</p>
 </main>
 
 
